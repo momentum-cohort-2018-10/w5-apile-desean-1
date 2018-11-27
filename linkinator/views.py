@@ -6,8 +6,11 @@ from django.contrib.auth.decorators import login_required
 
 
 def index(request):
+    posts = Post.objects.all()
     post = "Post title"
-    return render(request, 'index.html')
+    return render(request, 'index.html', {
+        'posts': posts,
+    })
 
 def create_post(request):
     form = PostForm

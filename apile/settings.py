@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'linkinator',
     'django_extensions',
     'registration',
+    'mimesis',
 ]
 
 MIDDLEWARE = [
