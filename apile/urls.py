@@ -19,5 +19,6 @@ from linkinator import views
 
 urlpatterns = [
     path('', views.index, name='jelly_donut'),
+    path('create_post', views.create_post, name='create_post'),
     path('admin/', admin.site.urls),
 ]
