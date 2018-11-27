@@ -8,7 +8,7 @@ class PostAdmin(admin.ModelAdmin):
 
 class CommentAdmin(admin.ModelAdmin):
     model = Comment
-    list_display = ('commentz', 'post_comment', 'user_comment')
+    list_display = ('comment', 'post', 'user')
 
 
 

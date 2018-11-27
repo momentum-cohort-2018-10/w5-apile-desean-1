@@ -4,8 +4,11 @@
 {% endblock title %}
 
 {% block content %}
-    <h1>Hello World</h1>
+{% for post in posts %}
+    <h3>{{ post.title }}</h3>
+    <p>{{ post.description }}</p>
     <hr>
+    {% endfor %}
     <h1><a href="{% url 'create_post' %}">Create a post</a></h1>
 {% endblock content %}
 
