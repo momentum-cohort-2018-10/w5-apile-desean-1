@@ -5,8 +5,11 @@ name = "pypi"
 
 [packages]
 django = "*"
+django-extensions = "*"
+django-registration-redux = "==2.0"
 
 [dev-packages]
+"pep8" = "*"
 
 [requires]
 python_version = "3.7"

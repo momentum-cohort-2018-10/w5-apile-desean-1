@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
+from linkinator.models import Comment, Post, Vote
 from linkinator.forms import PostForm
 from django.template.defaultfilters import slugify
+from django.contrib.auth.decorators import login_required
+
 
 def index(request):
     post = "Post title"
@@ -15,7 +18,7 @@ def create_post(request):
             post.author = request.user
             post.slug = slugify(post.title)
             post.save()
-            return redirect('jelly_donut')
+            return redirect('home')
     else:
         form = PostForm()
 

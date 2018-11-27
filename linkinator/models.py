@@ -9,6 +9,7 @@ class TimeStamp(models.Model):
 
 class Post(TimeStamp):
     title = models.CharField(max_length=300)
+    url = models.URLField(max_length=400, null=True)
     description = models.TextField()
     slug = models.SlugField(unique=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)

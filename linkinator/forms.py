@@ -4,4 +4,4 @@ from linkinator.models import Post, Comment, Vote
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'description')
+        fields = ('title', 'url', 'description')

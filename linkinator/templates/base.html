@@ -10,6 +10,20 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
+    <nav>
+        <ul class="">
+            <div class="">
+                    <li class=""><a href="{% url 'home' %}">Home</a></li>
+                    <li class=""><a href="{% url 'create_post' %}">Submit a link</a></li>
+                {% if user.is_authenticated %}
+                    <li class=""><a href="{% url 'auth_logout' %}">Logout</a></li>
+                {% else %}
+                    <li class=""><a href="{% url 'auth_login' %}">Login</a></li>
+                    <li class=""><a href="{% url 'registration_register' %}">Register</a></li>
+                {% endif %}
+            </div>
+        </ul>
+    </nav>
     {% block content %}
     {% endblock content %}
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
