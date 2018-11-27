@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from linkinator import views
 
 urlpatterns = [
+    path('', views.index, name='jelly_donut'),
     path('admin/', admin.site.urls),
 ]
