@@ -11,6 +11,7 @@ from django.contrib.auth.views import (
 
 urlpatterns = [
     path('', views.index, name='home'),
+    path('post/<slug>', views.PostDetailView.as_view(), name='post_detail'),
     path('create_post', views.create_post, name='create_post'),
     path('accounts/password/reset/', PasswordResetView.as_view(template_name='registration/password_reset_form.html'), name="password_reset"),
     path('accounts/password/reset/done/', PasswordResetDoneView.as_view(template_name='registration/password_reset_done.html'), name="password_reset_done"),

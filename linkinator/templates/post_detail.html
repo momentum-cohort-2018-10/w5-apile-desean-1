@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{ post.title }} - {{ block.super }}
+{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h3><a href="{% url 'post_detail' slug=post.slug %}">{{ post.title }}</a></h3>
+                <p>{{ post.description }}</p>
+                <p><a class="btn btn-secondary" href="#" role="button">View Details &raquo;</a></p>
+            </div>
+        </div>
+    </div>
+{% endblock content %} 

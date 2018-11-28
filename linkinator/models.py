@@ -16,6 +16,8 @@ class Post(TimeStamp):
     description = models.TextField()
     slug = models.SlugField(unique=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    favorited_users = models.ManyToManyField(User, through='Favorite', related_name='favorite_posts')
+    voted_users = models.ManyToManyField(User, through='Vote', related_name='voted_posts')
 
     def save(self, *args, **kwargs):
         if not self.id:
