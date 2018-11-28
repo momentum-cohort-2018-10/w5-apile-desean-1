@@ -27,7 +27,7 @@ SECRET_KEY = 'm%qc09ky)&fehtg5e5(r8a_2-ab=1ce=%v&*b3np6-t@thf8l!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'https://serene-river-53724.herokuapp.com/']
 
 
 # Application definition
