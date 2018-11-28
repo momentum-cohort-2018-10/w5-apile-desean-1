@@ -8,6 +8,7 @@ django = "*"
 django-extensions = "*"
 django-registration-redux = "==2.0"
 mimesis = "*"
+"psycopg2" = "*"
 
 [dev-packages]
 "pep8" = "*"
