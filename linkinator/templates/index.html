@@ -4,11 +4,16 @@
 {% endblock title %}
 
 {% block content %}
-{% for post in posts %}
-    <h3>{{ post.title }}</h3>
-    <p>{{ post.description }}</p>
-    <hr>
-    {% endfor %}
-    <h1><a href="{% url 'create_post' %}">Create a post</a></h1>
+    <div class="container">
+        <div class="row">
+            {% for post in posts %}
+                <div class="col-md-4">
+                    <h3>{{ post.title }}</h3>
+                    <p>{{ post.description }}</p>
+                    <p><a class="btn btn-secondary" href="#" role="button">View Details &raquo;</a></p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock content %} 
 
