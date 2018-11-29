@@ -30,10 +30,20 @@ def create_post(request):
         'form': form,
     })
 
+def post_view(request, slug):
+    comments = Comment.objects.all().order_by('-created')
+    post = Post.objects.get(slug=slug)
+
+    return render(request, 'post_detail.html', {
+        'comments': comments,
+        'post': post,
+        'slug': slug,
+    })
+
 class PostDetailView(DetailView):
     model = Post
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['now'] = timezone.now()
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['now'] = timezone.now()
+    #     return context
