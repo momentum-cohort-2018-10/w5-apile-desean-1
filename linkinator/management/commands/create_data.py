@@ -19,63 +19,35 @@ class Command(BaseCommand):
 
         users = []
         person = Person()
-        for fake_user in range(10):
+        for fake_user in range(100):
             fake_user = User.objects.create_user(person.username(), person.email(), 'password')
             users.append(fake_user)
-        print("Users created")
+        print(f'{len(users)} users imported!!!')
 
-        starter_posts = [
-            {
-                'title': 'First post',
+
+        import random
+
+        starter_posts = []
+
+        for i in range(100):
+            dictionary = {
+                'title': f'A craaaaaazzy title {i}',
                 'url': 'https://www.google.com',
                 'description': 'This is a simple post. We are simple people. Onomatopoeia...',
-                'author': users[0],
-            },
-            {
-                'title': 'Second post',
-                'url': 'https://www.google.com',
-                'description': 'This is a simple post. We are simple people. Onomatopoeia...',
-                'author': users[0],
-            },
-            {
-                'title': 'Third post',
-                'url': 'https://www.google.com',
-                'description': 'This is a simple post. We are simple people. Onomatopoeia...',
-                'author': users[0],
-            },
-            {
-                'title': 'Fourth post',
-                'url': 'https://www.google.com',
-                'description': 'This is a simple post. We are simple people. Onomatopoeia...',
-                'author': users[0],
-            },
-            {
-                'title': 'Fifth post',
-                'url': 'https://www.google.com',
-                'description': 'This is a simple post. We are simple people. Onomatopoeia...',
-                'author': users[0],
-            },
-            {
-                'title': 'Sixth post',
-                'url': 'https://www.google.com',
-                'description': 'This is a simple post. We are simple people. Onomatopoeia...',
-                'author': users[0],
-            },
-        ]
+                'author': users[random.randrange(100)],
+            }
+            starter_posts.append(dictionary)
 
         posts = []
         for post_data in starter_posts:
             post = Post.objects.create(**post_data)
             posts.append(post)
-        print('Posts imported!!!')
+        print(f'{len(posts)} Posts imported!!!')
 
-        # Vote.objects.create(post=posts[0], user=users[0])
-        # Vote.objects.create(post=posts[0], user=users[1])
-        # Vote.objects.create(post=posts[0], user=users[2])
-        # Vote.objects.create(post=posts[3], user=users[3])
-        # Vote.objects.create(post=posts[3], user=users[4])
-        # Vote.objects.create(post=posts[4], user=users[5])
-        # Vote.objects.create(post=posts[4], user=users[6])
-        # Vote.objects.create(post=posts[4], user=users[7])
-        # Vote.objects.create(post=posts[4], user=users[8])
-        # Vote.objects.create(post=posts[4], user=users[9])
+
+        comments = []
+        for i in range(90):
+            Comment.objects.create(post=posts[random.randrange(90)], user=users[random.randrange(90)], comment='this is a comment. lorem ipsem in your face')
+
+        for i in range(100):
+            Vote.objects.create(post=posts[random.randrange(90)], user=users[i])
