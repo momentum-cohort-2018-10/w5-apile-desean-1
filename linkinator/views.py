@@ -5,13 +5,7 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.decorators import login_required
 from django.views.generic.detail import DetailView
 from django.utils import timezone
-
-def index(request):
-    posts = Post.objects.all()
-    post = "Post title"
-    return render(request, 'index.html', {
-        'posts': posts,
-    })
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 def create_post(request):
     form = PostForm
@@ -31,7 +25,7 @@ def create_post(request):
     })
 
 def post_view(request, slug):
-    comments = Comment.objects.all().order_by('-created')
+    comments = Comment.objects.all().order_by('created')
     post = Post.objects.get(slug=slug)
 
     return render(request, 'post_detail.html', {
@@ -42,6 +36,16 @@ def post_view(request, slug):
 
 class PostDetailView(DetailView):
     model = Post
+
+def index(request):
+    post_list = Post.objects.all()
+    paginator = Paginator(post_list, 20)
+
+    page = request.GET.get('page')
+    posts = paginator.get_page(page)
+    return render(request, 'index.html', {'posts': posts})
+
+
 
     # def get_context_data(self, **kwargs):
     #     context = super().get_context_data(**kwargs)
