@@ -11,8 +11,15 @@
                 <h4>By {{ post.author }}</h4>
             
                 <p>{{ post.description }}</p>
+                
+                <p>{{ post.votes.count }}
+                <form action="{% url "vote" slug=post.slug %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name='post' value='{{ post.slug }}'>
+                <button type='submit'>favorite</button>
+                </form>
                 <HR>
-                {% for comment in comments %}
+                {% for comment in post.comments.all %}
                 {% comment %} {% for comment in post.comments.all %} {% endcomment %}
                     <div class="comment">
                     <div class="date">{{ comment.created }}</div>
@@ -21,7 +28,6 @@
                     </div>
                 {% empty %}
                     <p>Add a comment! :)</p>
-                
                 {% endfor %}
 
             </div>
