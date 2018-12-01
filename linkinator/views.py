@@ -37,12 +37,12 @@ def vote(request, slug):
     post = Post.objects.get(slug=slug)
     if post in request.user.voted_posts.all():
         post.votes.get(user=request.user).delete()
-        message = f"Your vote has been removed from {post.title}!"
+        message = f"Your vote has been removed from the post '{post.title}'!"
         messages.add_message(request, messages.WARNING, message)
 
     else:
         post.votes.create(user=request.user)
-        message = f"You added a vote for {post.title}!"
+        message = f"You added a vote for the post '{post.title}'!"
         messages.add_message(request, messages.SUCCESS, message)
     return redirect('post_detail', slug)
 
