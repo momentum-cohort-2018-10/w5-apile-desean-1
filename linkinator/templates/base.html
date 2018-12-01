@@ -34,12 +34,14 @@ dcomment %}
             <a class="Nav-link" href="{% url 'registration_register' %}">Register</a>
             </li>
           {% endif %}
+          {% if user.is_authenticated %}
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ request.user }}</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
+              <a class="dropdown-item" href="{% url 'voted' %}">Your Votes</a>
+              <a class="dropdown-item" href="{% url 'posted' %}">Your Posts</a>
+              <a class="dropdown-item" href="{% url 'comments' %}">Your Comments</a>
+              {% endif %}
             <li class="nav-link">
               <section>
                 <form action="{% url 'search' %}" method="GET">
@@ -58,7 +60,7 @@ dcomment %}
     <div class="jumbotron">
       <div class="container">
         <h1 class="display-3">Linkinator</h1>
-        <p>Welcome to Linkinator - the cream of the internet crop</p>
+        <p>Welcome to Linkinator - The place to find the best links on the web, voted to the top by websurfers like you! </p>
         <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
       </div>
     </div>

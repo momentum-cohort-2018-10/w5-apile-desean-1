@@ -11,10 +11,17 @@ from django.contrib.auth.views import (
 
 urlpatterns = [
     path('', views.index, name='home'),
-    path('post/<slug>', views.post_view, name='post_detail'),
-    path('post/<slug>/vote', views.vote, name='vote'),
+    path('post/<slug>', views.post_detail, name='post_detail'),
+    path('post/<slug>/vote', views.vote_detail, name='vote_detail'),
     path('search', views.search, name='search'),
+    # path('vote_user', views.vote_user, name='vote_user'),
+    path('vote_index/<slug>', views.vote_index, name='vote_index'),
+    # path('vote_detail/<slug>', views.vote_detail, name='vote_detail'),
+    path('<request.user>/voted', views.voted, name='voted'),
+    path('<request.user>/posted', views.posted, name='posted'),
+    path('<request.user>/comments', views.comments, name='comments'),
     path('create_post', views.create_post, name='create_post'),
+    # account registration views
     path('accounts/password/reset/', PasswordResetView.as_view(template_name='registration/password_reset_form.html'), name="password_reset"),
     path('accounts/password/reset/done/', PasswordResetDoneView.as_view(template_name='registration/password_reset_done.html'), name="password_reset_done"),
     path('accounts/password/reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(template_name='registration/password_reset_confirm.html'), name="password_reset_confirm"),
