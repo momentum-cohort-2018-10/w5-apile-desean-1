@@ -3,6 +3,7 @@ from linkinator.models import Comment, Post, Vote
 from linkinator.forms import PostForm
 from django.template.defaultfilters import slugify
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.views.generic.detail import DetailView
 from django.utils import timezone
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
@@ -34,11 +35,15 @@ def post_view(request, slug):
 
 def vote(request, slug):
     post = Post.objects.get(slug=slug)
-
-    if request.user in post.votes.all():
+    if post in request.user.voted_posts.all():
         post.votes.get(user=request.user).delete()
+        message = f"Your vote has been removed from the post '{post.title}'!"
+        messages.add_message(request, messages.WARNING, message)
+
     else:
         post.votes.create(user=request.user)
+        message = f"You added a vote for the post '{post.title}'!"
+        messages.add_message(request, messages.SUCCESS, message)
     return redirect('post_detail', slug)
 
 class PostDetailView(DetailView):
@@ -46,15 +51,16 @@ class PostDetailView(DetailView):
 
 def index(request):
     post_list = Post.objects.all()
-    paginator = Paginator(post_list, 20)
+    paginator = Paginator(post_list, 21)
 
     page = request.GET.get('page')
     posts = paginator.get_page(page)
     return render(request, 'index.html', {'posts': posts})
 
+def search(request):
+    query = request.GET.get('q')
+    posts = Post.objects.filter(title__icontains=query)
 
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['now'] = timezone.now()
-    #     return context
+    return render(request, 'index.html', {'posts': posts})
+

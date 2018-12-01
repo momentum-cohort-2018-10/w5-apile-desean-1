@@ -15,7 +15,7 @@ class Post(TimeStamp):
     title = models.CharField(max_length=300)
     url = models.URLField(max_length=400, null=True)
     description = models.TextField()
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, max_length=255)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     favorited_users = models.ManyToManyField(User, through='Favorite', related_name='favorite_posts')
     voted_users = models.ManyToManyField(User, through='Vote', related_name='voted_posts')

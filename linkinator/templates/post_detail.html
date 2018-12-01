@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}
     {{ post.title }} - {{ block.super }}
 {% endblock title %}
@@ -14,13 +15,17 @@
                 
                 <p>{{ post.votes.count }}
                 <form action="{% url "vote" slug=post.slug %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name='post' value='{{ post.slug }}'>
-                <button type='submit'>favorite</button>
+                    {% csrf_token %}
+                    <input type="hidden" name='post' value='{{ post.slug }}'>
+                {% if post in request.user.voted_posts.all  %}
+                    <input type="image" src="{% static 'images/removethumb.png' %}" />
+                {% else %}
+                    <input type="image" src="{% static 'images/thumbup.png' %}" />
+                {% endif %}
+                {% comment %} <button type='submit'>favorite</button> {% endcomment %}
                 </form>
                 <HR>
                 {% for comment in post.comments.all %}
-                {% comment %} {% for comment in post.comments.all %} {% endcomment %}
                     <div class="comment">
                     <div class="date">{{ comment.created }}</div>
                     <strong>{{ comment.user }}</strong>

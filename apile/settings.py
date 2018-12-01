@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
-import django_heroku
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -27,7 +25,7 @@ SECRET_KEY = 'm%qc09ky)&fehtg5e5(r8a_2-ab=1ce=%v&*b3np6-t@thf8l!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'https://serene-river-53724.herokuapp.com/']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -140,3 +138,12 @@ EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = False
 EMAIL_PORT = 1025
 LOGIN_REDIRECT_URL = 'home'
+
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.SUCCESS: 'alert alert-success',
+    messages.INFO: 'alert alert-info',
+    messages.WARNING: 'alert alert-warning',
+    messages.ERROR: 'alert alert-danger',
+}
