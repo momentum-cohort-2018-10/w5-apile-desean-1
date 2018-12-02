@@ -10,7 +10,6 @@
             <div class="col-md-4">
                 <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
                 <h4>By {{ post.author }}</h4>
-            
                 <p>{{ post.description }}</p>
                 <p>Upvoted {{ post.votes.count }} time{{ post.votes.count|pluralize }}
                 <form action="{% url "vote_detail" slug=post.slug %}" method="POST">
@@ -23,26 +22,26 @@
                 {% endif %}
                 </form>
                 <HR>
-                {% comment %} <a class="btn btn-default" href="{% url 'add_comment_to_post' pk=post.pk %}">Add comment</a> {% endcomment %}
-
                 {% for comment in post.comments.all %}
                     <div class="comment">
                     <div class="date">{{ comment.created }}</div>
                     <strong>{{ comment.user }}</strong>
                     <p>{{ comment.comment|linebreaks }}</p>
+                    {% if request.user == comment.user %}
+                    <form action="{% url 'delete_comment' pk=comment.pk slug=post.slug %}">
+                    {% csrf_token %}
+                    <input class="delete-button" type="image" src="{% static 'images/delete.png' %}">
+                    </form>
+                    {% endif %}
                     </div>
                 {% endfor %}   
-
                 <h1>Add comment</h1>
                 <form method="POST" action="{% url 'add_comment_to_post' slug=post.slug %}" class="post-form">
                 {% csrf_token %}
                 <table>
                 {{ form.as_table }}
                 </table>
-                <input type="submit" value='Add comment'>
-
-                <button type="submit" 
-                class="save btn btn-default">Add comment</button>
+                    <input type="submit" value='Add comment'>
                 </form>
             </div>
         </div>

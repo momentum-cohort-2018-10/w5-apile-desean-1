@@ -6,5 +6,5 @@
 .card {
     border-radius: 4%;
     background-color: #e9ecef;
-    margin: 2px;
+    border: 2px solid;
 }
