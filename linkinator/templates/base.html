@@ -46,7 +46,7 @@ dcomment %}
               <section>
                 <form action="{% url 'search' %}" method="GET">
                   <ul>
-                    <li><input type="search" placeholder="search" name="q"></li>
+                    <li><input type="search" placeholder="search" name="search"></li>
                   </ul>
                 </form>
               </section>            
@@ -77,6 +77,7 @@ dcomment %}
   {% endblock content %}
 
   {% block footer %}
+    <hr>
     <footer class="container">
       <p>&copy; Team Deanna and Sean 2018</p>
     </footer>

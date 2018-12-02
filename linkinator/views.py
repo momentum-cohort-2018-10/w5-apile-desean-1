@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.views.generic.detail import DetailView
 from django.utils import timezone
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db.models import Count
 
 def create_post(request):
     form = PostForm
@@ -57,7 +58,7 @@ class PostDetailView(DetailView):
     model = Post
 
 def index(request):
-    post_list = Post.objects.all()
+    post_list = Post.objects.all().annotate(num_votes=Count('votes')).order_by('-num_votes', '-created')
     paginator = Paginator(post_list, 21)
 
     page = request.GET.get('page')
@@ -65,9 +66,8 @@ def index(request):
     return render(request, 'index.html', {'posts': posts})
 
 def search(request):
-    query = request.GET.get('q')
+    query = request.GET.get('search')
     posts = Post.objects.filter(title__icontains=query)
-
     return render(request, 'index.html', {'posts': posts})
 
 def voted(request):
@@ -75,11 +75,9 @@ def voted(request):
     return render(request, 'voted.html', {'voted_posts': voted_posts})
 
 def comments(request):
-    posts = Post.objects.all()
-    user_comments = request.user.user_comments.all()
-    return render(request, 'comments.html', {'posts': posts, 'user_comments': user_comments})
+    commented_posts = request.user.user_comments.all()
+    return render(request, 'comments.html', {'commented_posts': commented_posts})
 
 def posted(request):
-    posts = Post.objects.all()
-
-    return render(request, 'voted.html', {'posts': posts})
+    posts = request.user.author.all()
+    return render(request, 'posted.html', {'posts': posts})

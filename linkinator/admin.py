@@ -3,7 +3,7 @@ from linkinator.models import Post, Comment, Vote
 
 class PostAdmin(admin.ModelAdmin):
     model = Post
-    list_display = ('title', 'author', 'url', 'description', 'slug', 'created', )
+    list_display = ('title', 'author', 'url', 'description', 'slug', 'created')
     prepopulated_fields = {'slug': ('title',)}
 
 class CommentAdmin(admin.ModelAdmin):
