@@ -12,8 +12,7 @@
                 <h4>By {{ post.author }}</h4>
             
                 <p>{{ post.description }}</p>
-                
-                <p>{{ post.votes.count }}
+                <p>Upvoted {{ post.votes.count }} time{{ post.votes.count|pluralize }}
                 <form action="{% url "vote_detail" slug=post.slug %}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name='post' value='{{ post.slug }}'>

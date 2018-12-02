@@ -16,7 +16,6 @@ class Post(TimeStamp):
     slug = models.SlugField(unique=True, max_length=255)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='author')
     voted_users = models.ManyToManyField(User, through='Vote', related_name='voted_posts')
-    # comments = models.ForeignKey('Comment', on_delete=models.CASCADE, null=True, related_name='post_comments')
     user_comments = models.ManyToManyField(User, through='Comment', related_name='user_comments')
 
     def __str__(self):
@@ -29,7 +28,7 @@ class Post(TimeStamp):
 
 class Comment(TimeStamp):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, related_name='comments')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='commenters')
     comment = models.CharField(max_length=300)
 
     def __str__(self):

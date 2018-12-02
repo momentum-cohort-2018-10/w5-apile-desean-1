@@ -17,9 +17,10 @@
                     {% endif %}
                     {{ post.title }}</a></h3>
                     <p>{{ post.description }}</p>
+                    <p>Added on {{ post.created|date:'m-d-Y' }}</p>
                     <p><a class="btn btn-secondary" href="{% url 'post_detail' slug=post.slug %}" role="button">View Details &raquo;</a></p>
                     <p><a href="{% url 'post_detail' slug=post.slug %}">{{ post.comments.count }} Comment{{ post.comments.count|pluralize }}</a></p>
-                    <p>favorited {{ post.votes.count }} time{{ post.votes.count|pluralize }}
+                    <p>Upvoted {{ post.votes.count }} time{{ post.votes.count|pluralize }}
                     {% if user.is_authenticated %}
                     <form action="{% url "vote_index" slug=post.slug %}" method="POST">
                         {% csrf_token %}

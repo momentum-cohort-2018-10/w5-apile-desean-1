@@ -40,7 +40,7 @@ dcomment %}
             <div class="dropdown-menu" aria-labelledby="dropdown01">
               <a class="dropdown-item" href="{% url 'voted' %}">Your Votes</a>
               <a class="dropdown-item" href="{% url 'posted' %}">Your Posts</a>
-              <a class="dropdown-item" href="{% url 'comments' %}">Your Comments</a>
+              <a class="dropdown-item" href="{% url 'commented' %}">Your Comments</a>
               {% endif %}
             <li class="nav-link">
               <section>
@@ -61,7 +61,7 @@ dcomment %}
       <div class="container">
         <h1 class="display-3">Linkinator</h1>
         <p>Welcome to Linkinator - The place to find the best links on the web, voted to the top by websurfers like you! </p>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+        <p><a class="btn btn-primary btn-lg" href="{% url 'about' %}" role="button">About &raquo;</a></p>
       </div>
     </div>
   </main>

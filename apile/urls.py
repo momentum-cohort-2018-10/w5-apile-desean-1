@@ -11,13 +11,14 @@ from django.contrib.auth.views import (
 
 urlpatterns = [
     path('', views.index, name='home'),
+    path('about/', views.about, name='about'),
     path('post/<slug>', views.post_detail, name='post_detail'),
     path('post/<slug>/vote', views.vote_detail, name='vote_detail'),
     path('search', views.search, name='search'),
     path('vote_index/<slug>', views.vote_index, name='vote_index'),
     path('<request.user>/voted', views.voted, name='voted'),
     path('<request.user>/posted', views.posted, name='posted'),
-    path('<request.user>/comments', views.comments, name='comments'),
+    path('<request.user>/commented', views.commented, name='commented'),
     path('create_post', views.create_post, name='create_post'),
     # account registration views
     path('accounts/password/reset/', PasswordResetView.as_view(template_name='registration/password_reset_form.html'), name="password_reset"),
