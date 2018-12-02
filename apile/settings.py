@@ -1,3 +1,4 @@
+from django.contrib.messages import constants as messages
 """
 Django settings for apile project.
 
@@ -58,7 +59,7 @@ ROOT_URLCONF = 'apile.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['TEMPLATES'],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -139,7 +140,6 @@ EMAIL_USE_TLS = False
 EMAIL_PORT = 1025
 LOGIN_REDIRECT_URL = 'home'
 
-from django.contrib.messages import constants as messages
 
 MESSAGE_TAGS = {
     messages.SUCCESS: 'alert alert-success',

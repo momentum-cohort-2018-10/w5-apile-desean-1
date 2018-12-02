@@ -23,16 +23,27 @@
                 {% endif %}
                 </form>
                 <HR>
+                {% comment %} <a class="btn btn-default" href="{% url 'add_comment_to_post' pk=post.pk %}">Add comment</a> {% endcomment %}
+
                 {% for comment in post.comments.all %}
                     <div class="comment">
                     <div class="date">{{ comment.created }}</div>
                     <strong>{{ comment.user }}</strong>
                     <p>{{ comment.comment|linebreaks }}</p>
                     </div>
-                {% empty %}
-                    <p>Add a comment! :)</p>
-                {% endfor %}
+                {% endfor %}   
 
+                <h1>Add comment</h1>
+                <form method="POST" action="{% url 'add_comment_to_post' slug=post.slug %}" class="post-form">
+                {% csrf_token %}
+                <table>
+                {{ form.as_table }}
+                </table>
+                <input type="submit" value='Add comment'>
+
+                <button type="submit" 
+                class="save btn btn-default">Add comment</button>
+                </form>
             </div>
         </div>
     </div>
