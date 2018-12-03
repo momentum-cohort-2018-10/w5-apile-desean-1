@@ -2,8 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 
-
-# Create your models here.
 class TimeStamp(models.Model):
     created = models.DateTimeField(auto_now_add=True, null=True)
     updated = models.DateTimeField(auto_now=True, null=True)
@@ -13,12 +11,12 @@ class TimeStamp(models.Model):
 
 class Post(TimeStamp):
     title = models.CharField(max_length=300)
-    url = models.URLField(max_length=400, null=True)
+    url = models.URLField(max_length=400, null=True, blank=True)
     description = models.TextField()
     slug = models.SlugField(unique=True, max_length=255)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    favorited_users = models.ManyToManyField(User, through='Favorite', related_name='favorite_posts')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='author')
     voted_users = models.ManyToManyField(User, through='Vote', related_name='voted_posts')
+    user_comments = models.ManyToManyField(User, through='Comment', related_name='user_comments')
 
     def __str__(self):
         return self.title
@@ -30,22 +28,15 @@ class Post(TimeStamp):
 
 class Comment(TimeStamp):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, related_name='comments')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='commenters')
     comment = models.CharField(max_length=300)
 
     def __str__(self):
-        return self.text
+        return self.comment
 
 class Vote(TimeStamp):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, related_name='votes')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='voted')
-
-    class Meta:
-        unique_together = ('post', 'user',)
-
-class Favorite(TimeStamp):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='voters')
 
     class Meta:
         unique_together = ('post', 'user',)

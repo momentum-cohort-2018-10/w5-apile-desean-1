@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    User comments - {{ block.super }}
+{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+        {% for post in commented_posts %}
+            <div class="card">
+                <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
+                {% for comment in post.comments.all %}
+                    {% if request.user == comment.user %}
+                        <div class="comment">
+                            <div class="date">{{ comment.created }}</div>
+                            <strong>{{ comment.user }}</strong>
+                            <p>{{ comment.comment|linebreaks }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+{% endblock content %}
