@@ -1,8 +1,7 @@
 from django.core.management.base import BaseCommand
-from linkinator.models import Post, Comment, Vote, Favorite
+from linkinator.models import Post, Comment, Vote
 from django.contrib.auth.models import User
 from mimesis import Person, Generic, locales
-from linkinator.models import Post, Comment, Vote, Favorite
 import random
 
 class Command(BaseCommand):
