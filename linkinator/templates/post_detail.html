@@ -21,17 +21,25 @@
                     <input type="image" src="{% static 'images/thumbup.png' %}" />
                 {% endif %}
                 </form>
+                {% if request.user == post.author %}
+                <a href="{% url 'edit_post' slug=post.slug %}">
+                    <input type="image" src="{% static 'images/edit.png' %}">
+                </a>
+                {% endif %}
                 <HR>
                 {% for comment in post.comments.all %}
                     <div class="comment">
                     <div class="date">{{ comment.created }}</div>
-                    <strong>{{ comment.user }}</strong>
-                    <p>{{ comment.comment|linebreaks }}</p>
+                    <strong>by: {{ comment.user }}</strong>
+                    <div class="card"><p>{{ comment.comment }}</p></div>
                     {% if request.user == comment.user %}
                     <form action="{% url 'delete_comment' pk=comment.pk slug=post.slug %}">
                     {% csrf_token %}
-                    <input class="delete-button" type="image" src="{% static 'images/delete.png' %}">
+                    <input type="image" src="{% static 'images/delete.png' %}">
                     </form>
+                    <a href="{% url 'edit_comment' pk=comment.pk slug=post.slug %}">
+                    <input type="image" src="{% static 'images/edit.png' %}">
+                    </a>
                     {% endif %}
                     </div>
                 {% endfor %}   

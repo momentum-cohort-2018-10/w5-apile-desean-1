@@ -15,6 +15,7 @@ urlpatterns = [
     path('post/<slug>', views.post_detail, name='post_detail'),
     path('post/<slug>/add_comment_to_post', views.add_comment_to_post,
          name="add_comment_to_post"),
+    path('post/<slug>/<pk>/edit_comment', views.edit_comment, name='edit_comment'),
     path('post/<slug>/<pk>/delete_comment', views.delete_comment, name='delete_comment'),
     path('post/<slug>/vote', views.vote_detail, name='vote_detail'),
     path('search', views.search, name='search'),
@@ -23,6 +24,7 @@ urlpatterns = [
     path('<request.user>/posted', views.posted, name='posted'),
     path('<request.user>/commented', views.commented, name='commented'),
     path('create_post', views.create_post, name='create_post'),
+    path('post/<slug>/edit_post', views.edit_post, name='edit_post'),
     # account registration views
     path('accounts/password/reset/', PasswordResetView.as_view(
         template_name='registration/password_reset_form.html'), name="password_reset"),
