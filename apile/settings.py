@@ -26,8 +26,7 @@ SECRET_KEY = 'm%qc09ky)&fehtg5e5(r8a_2-ab=1ce=%v&*b3np6-t@thf8l!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'https://serene-river-53724.herokuapp.com/', 'https://arcane-mesa-74274.herokuapp.com/']
-
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # Application definition
 
@@ -129,7 +128,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 ACCOUNT_ACTIVATION_DAYS = 7
