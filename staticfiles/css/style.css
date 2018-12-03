@@ -1,0 +1,10 @@
+.center {
+    margin: 6px 3px 3px 0px;
+
+}
+
+.card {
+    border-radius: 4%;
+    background-color: #e9ecef;
+    border: 2px solid rgb(138, 187, 243);
+}

@@ -14,6 +14,7 @@
                 <h4>By {{ post.author }}</h4>
                 <p>{{ post.description }}</p>
                 <p>Upvoted {{ post.votes.count }} time{{ post.votes.count|pluralize }}
+                {% if user.is_authenticated %}
                 <form action="{% url "vote_detail" slug=post.slug %}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name='post' value='{{ post.slug }}'> 
@@ -23,13 +24,14 @@
                     <input type="image" src="{% static 'images/thumbup.png' %}" />
                 {% endif %}
                 </form>
+                {% endif %}
                 {% if request.user == post.author %}
                 <a href="{% url 'edit_post' slug=post.slug %}">
                     <input type="image" src="{% static 'images/edit.png' %}">
                 </a>
                 {% endif %}
                 <HR>
-                {% for comment in post.comments.all %}
+                {% for comment in comments %}
                     <div class="comment">
                     <div class="date">{{ comment.created }}</div>
                     <strong>by: {{ comment.user }}</strong>
@@ -44,8 +46,8 @@
                     </a>
                     {% endif %}
                     </div>
-                {% endfor %}   
-                {% comment %} <h1>Add comment</h1> {% endcomment %}
+                {% endfor %} 
+                {% if user.is_authenticated %}
                 <form method="POST" action="{% url 'add_comment_to_post' slug=post.slug %}" class="post-form">
                 {{ form|crispy }}
                 {% csrf_token %}
@@ -54,6 +56,7 @@
                 </table> {% endcomment %}
                     <input type="submit" value='Add comment'>
                 </form>
+                {% endif %}
             </div>
         </div>
     </div>

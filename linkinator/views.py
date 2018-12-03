@@ -24,6 +24,7 @@ def index(request):
 
 def post_detail(request, slug):
     post = Post.objects.get(slug=slug)
+    comments = post.comments.all().order_by('-created')
     form = CommentForm
     if request.method == 'POST':
         form = CommentForm(request.POST)
@@ -32,11 +33,15 @@ def post_detail(request, slug):
             comment.user = request.user
             comment.post = post
             comment.save()
+            message = f"Your comment has been added to '{post.title}'!"
+            messages.add_message(request, messages.SUCCESS, message)
+
             return redirect('post_detail', slug)
     else:
         form = CommentForm()
     return render(request, 'post_detail.html', {
         'post': post,
+        'comments': comments,
         'form': form,
         'slug': slug,
     })
@@ -57,6 +62,9 @@ def create_post(request):
             post.author = request.user
             post.slug = slugify(post.title)
             post.save()
+            message = f"The post '{post.title}' was successfully created!"
+            messages.add_message(request, messages.SUCCESS, message)
+
             return redirect('home')
     else:
         form = PostForm()
@@ -68,22 +76,18 @@ def create_post(request):
 @login_required
 def edit_post(request, slug):
     post = Post.objects.get(slug=slug)
-    # Check that the logged in user is the owner, if not, raise Http404 error
     if post.author != request.user:
         raise Http404
-    # set the form we are using.
     form_class = PostForm
-    # if coming to view from a submitted form...
     if request.method == 'POST':
-        # grab the data from the submitted form.
         form = form_class(data=request.POST, instance=post)
         if form.is_valid():
             form.save()
+            message = f"'{post.title}' was edited successfully!"
+            messages.add_message(request, messages.SUCCESS, message)
             return redirect('post_detail', slug=post.slug)
-    # otherwise, create a new form.
     else:
         form = form_class(instance=post)
-    # render the template
     return render(request, 'create_post.html', {
         'post': post,
         'form': form,
@@ -101,6 +105,8 @@ def add_comment_to_post(request, slug):
             comment.user = request.user
             comment.post = post
             comment.save()
+            message = f"Your comment has been added to '{post.title}'!"
+            messages.add_message(request, messages.SUCCESS, message)
             return redirect('post_detail', slug)
     else:
         form = CommentForm()
@@ -115,40 +121,30 @@ def add_comment_to_post(request, slug):
 def edit_comment(request, slug, pk):
     post = Post.objects.get(slug=slug)
     comment = Comment.objects.get(pk=pk)
-    # Check that the logged in user is the owner, if not, raise Http404 error
     if comment.user != request.user:
         raise Http404
-    # set the form we are using.
     form_class = CommentForm
-    # if coming to view from a submitted form...
     if request.method == 'POST':
-        # grab the data from the submitted form.
         form = form_class(data=request.POST, instance=comment)
         if form.is_valid():
             form.save()
+            message = f"Your comment has been edited!"
+            messages.add_message(request, messages.SUCCESS, message)
             return redirect('post_detail', slug=post.slug)
-    # otherwise, create a new form.
     else:
         form = form_class(instance=comment)
-    # render the template
     return render(request, 'edit_comment.html', {
         'comment': comment,
         'form': form,
     })
 
-    # message = f"Your comment has been edited"
-    # messages.add_message(request, messages.WARNING, message)
-    # return redirect('post_detail', slug)
-
-
 def delete_comment(request, slug, pk):
     post = Post.objects.get(slug=slug)
     comment = Comment.objects.get(pk=pk)
     comment.delete()
-    message = f"Your comment has been edited deleted from the post '{post.title}'!"
-    messages.add_message(request, messages.INFO, message)
+    message = f"Your comment has been removed from '{post.title}'!"
+    messages.add_message(request, messages.WARNING, message)
     return redirect('post_detail', slug)
-
 
 def vote(request, slug):
     post = Post.objects.get(slug=slug)
@@ -160,8 +156,6 @@ def vote(request, slug):
         post.votes.create(user=request.user)
         message = f"You added a vote for the post '{post.title}'!"
         messages.add_message(request, messages.SUCCESS, message)
-
-# archaic voting views for the JavaScript illiterate
 
 
 def vote_index(request, slug=None):
@@ -188,10 +182,10 @@ def voted(request):
 
 
 def commented(request):
-    commented_posts = request.user.user_comments.all()
+    commented_posts = request.user.user_comments.all().order_by('-created').distinct()
     return render(request, 'comments.html', {'commented_posts': commented_posts})
 
 
 def posted(request):
-    posts = request.user.author.all()
+    posts = request.user.author.all().order_by('-created')
     return render(request, 'posted.html', {'posts': posts})
