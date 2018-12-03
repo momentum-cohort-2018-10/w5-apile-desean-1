@@ -11,7 +11,7 @@
                 <div class="col-md-4 card">
                     <h3>
                     {% if post.url %}
-                    <a href=" {{ post.url }}">
+                    <a href="{{ post.url }}">
                     {% else %}
                     <a href="{% url 'post_detail' slug=post.slug %}">
                     {% endif %}

@@ -51,6 +51,7 @@ def create_post(request):
     })
 
 
+@login_required
 def add_comment_to_post(request, slug):
     post = Post.objects.get(slug=slug)
     form = CommentForm
@@ -66,7 +67,7 @@ def add_comment_to_post(request, slug):
         form = CommentForm()
 
     return render(request, 'post_detail.html', {
-        'form': form,
+        'post': post, 'form': form, 'slug': slug
     })
 
 

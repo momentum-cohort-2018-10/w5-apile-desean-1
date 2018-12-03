@@ -13,16 +13,16 @@
             
                 <p>{{ post.description }}</p>
                 <p>Upvoted {{ post.votes.count }} time{{ post.votes.count|pluralize }}
-                <form action="{% url "vote_detail" slug=post.slug %}" method="POST">
+                {% comment %} <form action="{% url "vote_detail" slug=post.slug %}" method="POST">
                     {% csrf_token %}
-                    <input type="hidden" name='post' value='{{ post.slug }}'>
-                {% if post in request.user.voted_posts.all  %}
+                    <input type="hidden" name='post' value='{{ post.slug }}'> {% endcomment %}
+                {% comment %} {% if post in request.user.voted_posts.all  %}
                     <input type="image" src="{% static 'images/removethumb.png' %}" />
                 {% else %}
                     <input type="image" src="{% static 'images/thumbup.png' %}" />
                 {% endif %}
                 </form>
-                <HR>
+                <HR> {% endcomment %}
                 {% comment %} <a class="btn btn-default" href="{% url 'add_comment_to_post' pk=post.pk %}">Add comment</a> {% endcomment %}
 
                 {% for comment in post.comments.all %}
@@ -33,16 +33,13 @@
                     </div>
                 {% endfor %}   
 
-                <h1>Add comment</h1>
+                {% comment %} <h1>Add comment</h1> {% endcomment %}
                 <form method="POST" action="{% url 'add_comment_to_post' slug=post.slug %}" class="post-form">
                 {% csrf_token %}
                 <table>
                 {{ form.as_table }}
                 </table>
                 <input type="submit" value='Add comment'>
-
-                <button type="submit" 
-                class="save btn btn-default">Add comment</button>
                 </form>
             </div>
         </div>
