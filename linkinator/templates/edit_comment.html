@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
 {% block title %}
     Edit comment - {{ block.super }}
 {% endblock title %}
@@ -6,9 +8,10 @@
 {% block content %}
 <form method="POST">
     {% csrf_token %}
-    <table>
+    {{ form|crispy }}
+    {% comment %} <table>
     {{ form.as_table }}
-    </table>
+    </table> {% endcomment %}
     <input type="submit" value='Edit comment'>
 </form>
 {% endblock content %}
