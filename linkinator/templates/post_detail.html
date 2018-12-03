@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% crispy form form.helper %}
 {% load static %}
 {% block title %}
     {{ post.title }} - {{ block.super }}
@@ -15,8 +17,8 @@
                 {% if user.is_authenticated %}
                 <form action="{% url "vote_detail" slug=post.slug %}" method="POST">
                     {% csrf_token %}
-                    <input type="hidden" name='post' value='{{ post.slug }}'>
-                {% if post in request.user.voted_posts.all  %}
+                    <input type="hidden" name='post' value='{{ post.slug }}'> 
+                {% if post in request.user.voted_posts.all %}
                     <input type="image" src="{% static 'images/removethumb.png' %}" />
                 {% else %}
                     <input type="image" src="{% static 'images/thumbup.png' %}" />
@@ -44,14 +46,14 @@
                     </a>
                     {% endif %}
                     </div>
-                {% endfor %}   
+                {% endfor %} 
                 {% if user.is_authenticated %}
-                <h1>Add comment</h1>
                 <form method="POST" action="{% url 'add_comment_to_post' slug=post.slug %}" class="post-form">
+                {{ form|crispy }}
                 {% csrf_token %}
-                <table>
+                {% comment %} <table>
                 {{ form.as_table }}
-                </table>
+                </table> {% endcomment %}
                     <input type="submit" value='Add comment'>
                 </form>
                 {% endif %}

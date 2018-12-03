@@ -12,12 +12,15 @@ from django.http import HttpResponseRedirect
 from django.views.generic import UpdateView
 from django.http import Http404
 
+
 def index(request):
-    post_list = Post.objects.all().annotate(num_votes=Count('votes')).order_by('-num_votes', '-created')
+    post_list = Post.objects.all().annotate(num_votes=Count('votes')
+                                            ).order_by('-num_votes', '-created')
     paginator = Paginator(post_list, 21)
     page = request.GET.get('page')
     posts = paginator.get_page(page)
     return render(request, 'index.html', {'posts': posts})
+
 
 def post_detail(request, slug):
     post = Post.objects.get(slug=slug)
@@ -43,8 +46,10 @@ def post_detail(request, slug):
         'slug': slug,
     })
 
+
 def about(request):
     return render(request, 'about.html')
+
 
 def create_post(request):
     if not request.user.is_authenticated:
@@ -67,6 +72,7 @@ def create_post(request):
         'form': form,
     })
 
+
 @login_required
 def edit_post(request, slug):
     post = Post.objects.get(slug=slug)
@@ -87,6 +93,8 @@ def edit_post(request, slug):
         'form': form,
     })
 
+
+@login_required
 def add_comment_to_post(request, slug):
     post = Post.objects.get(slug=slug)
     form = CommentForm
@@ -107,6 +115,7 @@ def add_comment_to_post(request, slug):
         'form': form,
         'slug': slug,
     })
+
 
 @login_required
 def edit_comment(request, slug, pk):
@@ -137,7 +146,6 @@ def delete_comment(request, slug, pk):
     messages.add_message(request, messages.WARNING, message)
     return redirect('post_detail', slug)
 
-# archaic voting views for the JavaScript illiterate ;)
 def vote(request, slug):
     post = Post.objects.get(slug=slug)
     if post in request.user.voted_posts.all():
@@ -149,27 +157,34 @@ def vote(request, slug):
         message = f"You added a vote for the post '{post.title}'!"
         messages.add_message(request, messages.SUCCESS, message)
 
+
 def vote_index(request, slug=None):
     vote(request, slug)
     return redirect('home')
+
 
 def vote_detail(request, slug):
     vote(request, slug)
     return redirect('post_detail', slug)
 
 # custom views for searching or seeing user profile related activity
+
+
 def search(request):
     query = request.GET.get('search')
     posts = Post.objects.filter(title__icontains=query)
     return render(request, 'index.html', {'posts': posts})
 
+
 def voted(request):
     voted_posts = request.user.voted_posts.all()
     return render(request, 'voted.html', {'voted_posts': voted_posts})
 
+
 def commented(request):
     commented_posts = request.user.user_comments.all().order_by('-created').distinct()
     return render(request, 'comments.html', {'commented_posts': commented_posts})
+
 
 def posted(request):
     posts = request.user.author.all().order_by('-created')
