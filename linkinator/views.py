@@ -21,6 +21,7 @@ def index(request):
 
 def post_detail(request, slug):
     post = Post.objects.get(slug=slug)
+    comments = post.comments.all().order_by('-created')
     form = CommentForm
     if request.method == 'POST':
         form = CommentForm(request.POST)
@@ -37,6 +38,7 @@ def post_detail(request, slug):
         form = CommentForm()
     return render(request, 'post_detail.html', {
         'post': post,
+        'comments': comments,
         'form': form,
         'slug': slug,
     })
@@ -135,6 +137,7 @@ def delete_comment(request, slug, pk):
     messages.add_message(request, messages.WARNING, message)
     return redirect('post_detail', slug)
 
+# archaic voting views for the JavaScript illiterate ;)
 def vote(request, slug):
     post = Post.objects.get(slug=slug)
     if post in request.user.voted_posts.all():
@@ -146,7 +149,6 @@ def vote(request, slug):
         message = f"You added a vote for the post '{post.title}'!"
         messages.add_message(request, messages.SUCCESS, message)
 
-# archaic voting views for the JavaScript illiterate ;)
 def vote_index(request, slug=None):
     vote(request, slug)
     return redirect('home')
@@ -166,9 +168,9 @@ def voted(request):
     return render(request, 'voted.html', {'voted_posts': voted_posts})
 
 def commented(request):
-    commented_posts = request.user.user_comments.all()
+    commented_posts = request.user.user_comments.all().order_by('-created').distinct()
     return render(request, 'comments.html', {'commented_posts': commented_posts})
 
 def posted(request):
-    posts = request.user.author.all()
+    posts = request.user.author.all().order_by('-created')
     return render(request, 'posted.html', {'posts': posts})

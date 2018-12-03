@@ -29,7 +29,7 @@
                 </a>
                 {% endif %}
                 <HR>
-                {% for comment in post.comments.all %}
+                {% for comment in comments %}
                     <div class="comment">
                     <div class="date">{{ comment.created }}</div>
                     <strong>by: {{ comment.user }}</strong>
