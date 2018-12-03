@@ -1,5 +1,5 @@
 from django import forms
-from linkinator.models import Post, Comment, Vote, Comment
+from linkinator.models import Post, Comment, Vote
 
 
 class PostForm(forms.ModelForm):

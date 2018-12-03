@@ -9,6 +9,8 @@ from django.utils import timezone
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Count
 from django.http import HttpResponseRedirect
+from django.views.generic import UpdateView
+from django.http import Http404
 
 
 def index(request):
@@ -22,8 +24,20 @@ def index(request):
 
 def post_detail(request, slug):
     post = Post.objects.get(slug=slug)
+    form = CommentForm
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.post = post
+            comment.save()
+            return redirect('post_detail', slug)
+    else:
+        form = CommentForm()
     return render(request, 'post_detail.html', {
         'post': post,
+        'form': form,
         'slug': slug,
     })
 
@@ -52,6 +66,31 @@ def create_post(request):
 
 
 @login_required
+def edit_post(request, slug):
+    post = Post.objects.get(slug=slug)
+    # Check that the logged in user is the owner, if not, raise Http404 error
+    if post.author != request.user:
+        raise Http404
+    # set the form we are using.
+    form_class = PostForm
+    # if coming to view from a submitted form...
+    if request.method == 'POST':
+        # grab the data from the submitted form.
+        form = form_class(data=request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('post_detail', slug=post.slug)
+    # otherwise, create a new form.
+    else:
+        form = form_class(instance=post)
+    # render the template
+    return render(request, 'create_post.html', {
+        'post': post,
+        'form': form,
+    })
+
+
+@login_required
 def add_comment_to_post(request, slug):
     post = Post.objects.get(slug=slug)
     form = CommentForm
@@ -65,10 +104,50 @@ def add_comment_to_post(request, slug):
             return redirect('post_detail', slug)
     else:
         form = CommentForm()
-
     return render(request, 'post_detail.html', {
-        'post': post, 'form': form, 'slug': slug
+        'post': post,
+        'form': form,
+        'slug': slug,
     })
+
+
+@login_required
+def edit_comment(request, slug, pk):
+    post = Post.objects.get(slug=slug)
+    comment = Comment.objects.get(pk=pk)
+    # Check that the logged in user is the owner, if not, raise Http404 error
+    if comment.user != request.user:
+        raise Http404
+    # set the form we are using.
+    form_class = CommentForm
+    # if coming to view from a submitted form...
+    if request.method == 'POST':
+        # grab the data from the submitted form.
+        form = form_class(data=request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            return redirect('post_detail', slug=post.slug)
+    # otherwise, create a new form.
+    else:
+        form = form_class(instance=comment)
+    # render the template
+    return render(request, 'edit_comment.html', {
+        'comment': comment,
+        'form': form,
+    })
+
+    # message = f"Your comment has been edited"
+    # messages.add_message(request, messages.WARNING, message)
+    # return redirect('post_detail', slug)
+
+
+def delete_comment(request, slug, pk):
+    post = Post.objects.get(slug=slug)
+    comment = Comment.objects.get(pk=pk)
+    comment.delete()
+    message = f"Your comment has been edited deleted from the post '{post.title}'!"
+    messages.add_message(request, messages.INFO, message)
+    return redirect('post_detail', slug)
 
 
 def vote(request, slug):
